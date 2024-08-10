@@ -3,10 +3,12 @@ package com.jdbc_ex.mysql;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class BaseDeDatos {
+import com.jdbc_ex.mysql.dao.imp.PersonaDaoImp;
+import com.jdbc_ex.mysql.entities.Persona;
+
+public class Main {
 
     public static void main(String[] args) {
         // el valor del string deberia venir de algun lado, aca se esta hardcodeando
@@ -26,37 +28,18 @@ public class BaseDeDatos {
 
         try {
             Connection conn = DriverManager.getConnection(uri, "root", "rootpassword");
-
             conn.setAutoCommit(false);
+            
+            PersonaDaoImp personaDaoImp = new PersonaDaoImp();
 
-            createTables(conn);
-            agregarPersona(conn, 1, "Juan", 21);
-            agregarPersona(conn, 2, "Paula", 32);
+            personaDaoImp.createTable(conn);
+
+            personaDaoImp.createPersona(conn, new Persona("Juan", 22));
+            personaDaoImp.createPersona(conn, new Persona("Carla", 27));
 
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void createTables(Connection conn) throws SQLException {
-        String table = "CREATE TABLE persona(id INT, nombre VARCHAR(18), edad INT, PRIMARY KEY(id))";
-        conn.prepareStatement(table).execute();
-
-        conn.commit();
-    }
-
-    private static void agregarPersona(Connection conn, int id, String nombre, int edad) throws SQLException {
-        String insert = "INSERT INTO persona (id, nombre, edad) VALUES (?, ?, ?)";
-        PreparedStatement ps = conn.prepareStatement(insert);
-
-        ps.setInt(1, id);
-        ps.setString(2, nombre);
-        ps.setInt(3, edad);
-        ps.executeUpdate();
-
-        ps.close();
-
-        conn.commit();
     }
 }
