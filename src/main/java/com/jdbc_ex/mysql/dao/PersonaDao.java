@@ -8,7 +8,7 @@ import com.jdbc_ex.mysql.entities.Persona;
 
 public interface PersonaDao {
     public ResultSet getPersonas(Connection conn) throws SQLException;
-    public ResultSet getPersonaById(Connection conn, Integer id) throws SQLException;
+    public ResultSet getPersonaById(Connection conn, Long id) throws SQLException;
     public void createPersona(Connection conn, Persona persona) throws SQLException;
     public void createTable(Connection conn) throws SQLException;
 }

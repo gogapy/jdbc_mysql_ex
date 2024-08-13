@@ -20,11 +20,11 @@ public class PersonaDaoImp implements PersonaDao {
     }
 
     @Override
-    public ResultSet getPersonaById(Connection conn, Integer id) throws SQLException {
+    public ResultSet getPersonaById(Connection conn, Long id) throws SQLException {
         String select = "SELECT * FROM persona WHERE id = ?";
 
         PreparedStatement ps = conn.prepareStatement(select);
-        ps.setInt(1, id);
+        ps.setLong(1, id);
 
         return ps.executeQuery();
     }
